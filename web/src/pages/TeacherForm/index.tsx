@@ -11,8 +11,8 @@ function TeacherForm(){
         <div id="page-teacher-form" className="container">
             <PageHeader 
             title="Kickstart your teacher career today!"
-            description="The first step is to fill and submit this registration form"
-            />
+            description="The first step is to fill and submit this registration form">
+            </PageHeader>
 
             <main>
                 <fieldset>
