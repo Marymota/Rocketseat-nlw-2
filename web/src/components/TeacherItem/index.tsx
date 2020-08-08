@@ -8,7 +8,7 @@ function TeacherItem () {
     return (
         <article className="teacher-item">
 					<header>
-						<img src="https://avatars3.githubusercontent.com/u/20130249?s=460&u=e7c5caa7bc0b9709fd9ee7b7b956a7c20738e66a&v=4" />
+						<img src="https://avatars3.githubusercontent.com/u/20130249?s=460&u=e7c5caa7bc0b9709fd9ee7b7b956a7c20738e66a&v=4" alt="portrait"/>
 						<div>
 							<strong>Márcia Mota</strong>
 							<span>Graphic Design</span>

@@ -1,9 +1,12 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import PageHeader from '../../components/PageHeader';
+
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
+import api from '../../services/api';
 
 import warningIcon from '../../assets/images/icons/warning.svg';
 
@@ -29,27 +32,46 @@ function TeacherForm() {
             ...scheduleItems,
             { week_day: 0, from: '', until: '' }
         ]);
-        }
+    }
 
-    function handleCreateClass(e: FormEvent){
+    function setScheduleItemValue(position: number, field: string, value: string) {
+        const updateScheduleItems = scheduleItems.map((scheduleItem, index) => {
+            if (index === position) {
+                return {...scheduleItem, [field]: value };
+            }
+
+            return scheduleItem;
+        });
+        
+        setScheduleItems(updateScheduleItems);
+    }
+
+        function handleCreateClass(e: FormEvent) {
         e.preventDefault();
 
-        console.log({
+        api.post('classes', {
             name,
             avatar,
             whatsapp,
             bio,
             subject,
-            cost
-        })
+            cost: Number(cost),
+            schedule: scheduleItems
+        }).then(() => {
+            alert('Registered successfully!');
+        }).catch(() => {
+            alert('Unsuccessful registration attempt!');
+        });
     }
 
-    return(
+    
+
+    return (
         <div id="page-teacher-form" className="container">
             <PageHeader 
-            title="Kickstart your teacher career today!"
-            description="The first step is to fill and submit this registration form">
-            </PageHeader>
+                title="Kickstart your teacher career today!"
+                description="The first step is to fill and submit this registration form"
+            />
 
             <main>
                 <form onSubmit={handleCreateClass}>
@@ -57,31 +79,31 @@ function TeacherForm() {
                     <legend>Your info</legend>
 
                     <Input 
-                    name="name" 
-                    label="Full Name" 
-                    value={name} 
-                    onChange={(e) => {setName(e.target.value) }}
+                        name="name" 
+                        label="Full Name" 
+                        value={name} 
+                        onChange={(e) => {setName(e.target.value) }}
                     />
 
                     <Input 
-                    name="avatar" 
-                    label="Avatar"
-                    value={avatar}
-                    onChange={(e) => {setAvatar(e.target.value) }} 
+                        name="avatar" 
+                        label="Avatar"
+                        value={avatar}
+                        onChange={(e) => {setAvatar(e.target.value) }} 
                     />
 
                     <Input 
-                    name="whatsapp" 
-                    label="WhatsApp" 
-                    value={whatsapp}
-                    onChange={(e) => {setWhatsapp(e.target.value) }}
+                        name="whatsapp" 
+                        label="WhatsApp" 
+                        value={whatsapp}
+                        onChange={(e) => {setWhatsapp(e.target.value) }}
                     />
 
                     <Textarea 
-                    name="bio" 
-                    label="Biography"
-                    value={bio}
-                    onChange={(e) => {setBio(e.target.value) }}
+                        name="bio" 
+                        label="Biography"
+                        value={bio}
+                        onChange={(e) => {setBio(e.target.value) }}
                     />
                 </fieldset>
 
@@ -92,7 +114,7 @@ function TeacherForm() {
                         name="subject" 
                         label="Subject"
                         value={subject}
-                        onChange={(e) => {setSubject(e.target.value) }}
+                        onChange={(e) => {setSubject(e.target.value); }}
                         options={[
                            { value: 'Architecture', label: 'Architecture' },
                            { value: 'Art & Culture', label: 'Art & Culture' },
@@ -129,10 +151,10 @@ function TeacherForm() {
                     />
 
                     <Input 
-                    name="cost" 
-                    label="Hour cost" 
-                    value={cost}
-                    onChange={(e) => {setCost(e.target.value) }}
+                        name="cost" 
+                        label="Hour cost" 
+                        value={cost}
+                        onChange={(e) => {setCost(e.target.value) }}
                     />
                 </fieldset>
 
@@ -144,12 +166,14 @@ function TeacherForm() {
                         </button>
                     </legend>
 
-                    {scheduleItems.map(scheduleItem => {
+                    {scheduleItems.map((scheduleItem, index) => {
                         return (
-                            <div key={scheduleItem.week_day} className="scheduleItem">
+                            <div key={index} className="schedule-item">
                                 <Select 
                                     name="week_day" 
                                     label="Day of the week" 
+                                    value={scheduleItem.week_day}
+                                    onChange={e => setScheduleItemValue(index, 'week_day', e.target.value)}
                                     options={[
                                        { value: '0', label: 'Sunday' },
                                        { value: '1', label: 'Monday' },
@@ -160,8 +184,22 @@ function TeacherForm() {
                                        { value: '6', label: 'Saturday' }                           
                                     ]}
                                 />
-                                <Input name="from" label="From" type="time"></Input>
-                                    <Input name="until" label="Until" type="time" ></Input>
+                                <Input 
+                                    name="from" 
+                                    label="From" 
+                                    type="time"
+                                    value={scheduleItem.from}
+                                    onChange={e => setScheduleItemValue(index, 'from', e.target.value)}
+                                />
+                                    
+                                <Input 
+                                    name="until" 
+                                    label="Until" 
+                                    type="time"
+                                    value={scheduleItem.until}
+                                    onChange={e => setScheduleItemValue(index, 'until', e.target.value)}
+                                />
+
                             </div>
                                 );
                     })}
