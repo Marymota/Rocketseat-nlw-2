@@ -7,7 +7,7 @@ import convertHourToMinutes from '../utils/convertHourToMinutes';
 interface ScheduleItem {
     week_day: number;
     from: string;
-    until: string;
+    to: string;
 }
 
 export default class ClassesController {
@@ -34,7 +34,7 @@ export default class ClassesController {
                     .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
                     .whereRaw('`class_schedule`.`week_day` = ??',[Number(week_day)])
                     .whereRaw('`class_schedule`.`from` <= ??',[timeInMinutes])
-                    .whereRaw('`class_schedule`.`until` > ??',[timeInMinutes])
+                    .whereRaw('`class_schedule`.`to` > ??',[timeInMinutes])
             })
                     .where('classes.subject', '=', subject)
                     .join('users', 'classes.user_id', '=', 'users.id')
@@ -80,7 +80,7 @@ export default class ClassesController {
                     class_id,
                     week_day: scheduleItem.week_day,
                     from: convertHourToMinutes(scheduleItem.from),
-                    until: convertHourToMinutes(scheduleItem.until),
+                    to: convertHourToMinutes(scheduleItem.to),
                 };
             })
         

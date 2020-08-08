@@ -15,6 +15,8 @@ import './styles.css';
 
 
 function TeacherForm() {
+    const history = useHistory();
+
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState('');
     const [whatsapp, setWhatsapp] = useState('');
@@ -24,13 +26,13 @@ function TeacherForm() {
     const [cost, setCost] = useState('');    
 
     const [scheduleItems, setScheduleItems ] = useState ([
-        { week_day: 0, from: '', until: '' }
+        { week_day: 0, from: '', to: '' }
     ]);
 
     function addNewScheduleItem() {
         setScheduleItems([
             ...scheduleItems,
-            { week_day: 0, from: '', until: '' }
+            { week_day: 0, from: '', to: '' }
         ]);
     }
 
@@ -58,10 +60,12 @@ function TeacherForm() {
             cost: Number(cost),
             schedule: scheduleItems
         }).then(() => {
+            
+            history.push('/');
             alert('Registered successfully!');
         }).catch(() => {
             alert('Unsuccessful registration attempt!');
-        });
+        })
     }
 
     
@@ -154,7 +158,7 @@ function TeacherForm() {
                         name="cost" 
                         label="Hour cost" 
                         value={cost}
-                        onChange={(e) => {setCost(e.target.value) }}
+                        onChange={(e) => { setCost(e.target.value) }}
                     />
                 </fieldset>
 
@@ -168,7 +172,7 @@ function TeacherForm() {
 
                     {scheduleItems.map((scheduleItem, index) => {
                         return (
-                            <div key={index} className="schedule-item">
+                            <div key={scheduleItem.week_day} className="schedule-item">
                                 <Select 
                                     name="week_day" 
                                     label="Day of the week" 
@@ -193,11 +197,11 @@ function TeacherForm() {
                                 />
                                     
                                 <Input 
-                                    name="until" 
-                                    label="Until" 
+                                    name="to" 
+                                    label="To" 
                                     type="time"
-                                    value={scheduleItem.until}
-                                    onChange={e => setScheduleItemValue(index, 'until', e.target.value)}
+                                    value={scheduleItem.to}
+                                    onChange={e => setScheduleItemValue(index, 'to', e.target.value)}
                                 />
 
                             </div>
