@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 
 import PageHeader from '../../components/PageHeader';
 import Input from '../../components/Input';
@@ -12,6 +12,14 @@ import './styles.css';
 
 
 function TeacherForm() {
+    const [name, setName] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [whatsapp, setWhatsapp] = useState('');
+    const [bio, setBio] = useState('');
+
+    const [subject, setSubject] = useState('');
+    const [cost, setCost] = useState('');    
+
     const [scheduleItems, setScheduleItems ] = useState ([
         { week_day: 0, from: '', until: '' }
     ]);
@@ -23,6 +31,19 @@ function TeacherForm() {
         ]);
         }
 
+    function handleCreateClass(e: FormEvent){
+        e.preventDefault();
+
+        console.log({
+            name,
+            avatar,
+            whatsapp,
+            bio,
+            subject,
+            cost
+        })
+    }
+
     return(
         <div id="page-teacher-form" className="container">
             <PageHeader 
@@ -31,13 +52,37 @@ function TeacherForm() {
             </PageHeader>
 
             <main>
+                <form onSubmit={handleCreateClass}>
                 <fieldset>
                     <legend>Your info</legend>
 
-                    <Input name="name" label="Full Name" />
-                    <Input name="avatar" label="Avatar" />
-                    <Input name="whatsapp" label="WhatsApp" />
-                    <Textarea name="bio" label="Biography"></Textarea>
+                    <Input 
+                    name="name" 
+                    label="Full Name" 
+                    value={name} 
+                    onChange={(e) => {setName(e.target.value) }}
+                    />
+
+                    <Input 
+                    name="avatar" 
+                    label="Avatar"
+                    value={avatar}
+                    onChange={(e) => {setAvatar(e.target.value) }} 
+                    />
+
+                    <Input 
+                    name="whatsapp" 
+                    label="WhatsApp" 
+                    value={whatsapp}
+                    onChange={(e) => {setWhatsapp(e.target.value) }}
+                    />
+
+                    <Textarea 
+                    name="bio" 
+                    label="Biography"
+                    value={bio}
+                    onChange={(e) => {setBio(e.target.value) }}
+                    />
                 </fieldset>
 
                 <fieldset>
@@ -45,7 +90,9 @@ function TeacherForm() {
                     
                     <Select 
                         name="subject" 
-                        label="Subject" 
+                        label="Subject"
+                        value={subject}
+                        onChange={(e) => {setSubject(e.target.value) }}
                         options={[
                            { value: 'Architecture', label: 'Architecture' },
                            { value: 'Art & Culture', label: 'Art & Culture' },
@@ -81,7 +128,12 @@ function TeacherForm() {
                         ]}
                     />
 
-                    <Input name="cost" label="Hour cost" />
+                    <Input 
+                    name="cost" 
+                    label="Hour cost" 
+                    value={cost}
+                    onChange={(e) => {setCost(e.target.value) }}
+                    />
                 </fieldset>
 
                 <fieldset>
@@ -121,10 +173,11 @@ function TeacherForm() {
                         Important! <br />
                         Fill all the fields
                     </p>
-                    <button type="button"> 
+                    <button type="submit"> 
                     Save
                     </button>
                 </footer>
+                </form>
             </main>
 		</div>
     )  
