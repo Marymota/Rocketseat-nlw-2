@@ -46,4 +46,9 @@ Total number of connections made, Create new connection, Teachers List, Classes 
 Creation, access resources, HTTP Methods, *Insomnia.Rest* (create requests, testing routes), Parameters (Request Body, Route Params, Query Params);
 
 ## Database
-Instalation (knex, sqlite3), create *connection*, migrations...
+Instalation (knex, sqlite3), create *connection*, migrations, Async functions, tables; 
+
+# Third Day - Forms
+
+##React components & concepts
+Input, Textarea, Select, States
